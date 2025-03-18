@@ -36,8 +36,8 @@ export default function Navbar() {
             
             <Button 
               onClick={() => signOut()} 
-              variant="ghost" 
-              className="text-sm text-gray-700 hover:bg-gray-100 rounded-full px-4"
+              variant="outline" 
+              className="text-sm text-gray-700 hover:bg-gray-100  px-4"
             >
               Sign Out
             </Button>
@@ -45,7 +45,7 @@ export default function Navbar() {
         ) : (
           <Button 
             onClick={() => signOut()} 
-            className="bg-gray-900 hover:bg-black text-white rounded-full px-5 py-2 text-sm"
+            className="bg-gray-900 hover:bg-black text-white  px-5 py-2 text-sm"
           >
             Sign In
           </Button>

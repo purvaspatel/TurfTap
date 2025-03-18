@@ -1,6 +1,7 @@
 "use client";
 
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -10,24 +11,14 @@ export default function SignInPage() {
       <Card className="w-full max-w-md p-8 shadow-sm border border-gray-100">
         <div className="flex flex-col items-center space-y-6">
           {/* Logo */}
-          <div className="rounded-full bg-gray-50 p-3">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-gray-800"
-            >
-              <path d="M2 22v-5l5-5 5 5-5 5z" />
-              <path d="M9.5 14.5 16 8" />
-              <path d="M17 2v5h5" />
-              <path d="M14 7l3-3" />
-            </svg>
+          <div className="p-3">
+            <Image
+              src="/TurfTapLogo.png"
+              alt="Turftap Logo"
+              width={64}
+              height={64}
+              className="object-cover "
+            />
           </div>
           
           {/* Title and Description */}
@@ -38,8 +29,8 @@ export default function SignInPage() {
           
           {/* Sign in Button */}
           <Button
-            onClick={() => signIn("google", { callbackUrl: "/" })}
-            className="w-full rounded-full flex items-center justify-center space-x-2 bg-gray-900 hover:bg-black text-white py-5"
+            onClick={() => signIn("google", { callbackUrl: "/profile" })}
+            className="w-full flex items-center justify-center space-x-2 bg-gray-900 hover:bg-black text-white py-5"
             variant="default"
           >
             <svg 
