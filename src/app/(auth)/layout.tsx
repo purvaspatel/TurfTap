@@ -1,7 +1,7 @@
 "use client";
 
 import { SessionProvider } from "next-auth/react";
-
+import { Toaster } from "sonner";
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
@@ -32,6 +32,7 @@ function AuthContent({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+    <Toaster position="top-right" />
       <Navbar />
       {children}
     </>
