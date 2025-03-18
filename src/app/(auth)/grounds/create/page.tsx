@@ -24,26 +24,23 @@ export default function CreateGroundPage() {
     images: [""],
   });
 
-  // ✅ Standard text input change handler
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // ✅ Special handler for nested location object
   const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      location: { ...prev.location, [name]: value }, // Properly update nested object
+      location: { ...prev.location, [name]: value },
     }));
   };
 
-  // ✅ Fix for handling image URL updates
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
       ...prev,
-      images: [e.target.value], // Ensure images array updates correctly
+      images: [e.target.value], 
     }));
   };
 
