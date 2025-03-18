@@ -40,6 +40,8 @@ import { Check, Camera, Upload, X, ChevronsUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
+import { cloudinaryConfig } from '@/app/lib/cloudinary';
+
 const sportCategories = [
   { label: "Football", value: "football" },
   { label: "Cricket", value: "cricket" },
@@ -57,8 +59,6 @@ const sportCategories = [
 export default function CreateGroundPage() {
   const { data: session } = useSession();
   const router = useRouter();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [customCategory, setCustomCategory] = useState("");
@@ -77,7 +77,7 @@ export default function CreateGroundPage() {
     timings: "",
     isPaid: false,
     price: 0,
-    images: [""],
+    images: [] as string[],
   });
 
   // Update formData.category whenever selectedCategories or customCategory changes
@@ -131,39 +131,41 @@ export default function CreateGroundPage() {
     setCustomCategory(e.target.value);
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Create preview for UI
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-
-      // In a real implementation, you would upload the file to your server/cloud storage
-      // and update the formData with the returned URL
-      setFormData((prev) => ({
-        ...prev,
-        images: [file.name], // This would be the URL in production
-      }));
-    }
+  // Handle Cloudinary upload success
+  const handleUploadSuccess = (result: any) => {
+    // Get the secure URL from the upload result
+    const imageUrl = result.info.secure_url;
+    
+    // Update form data with the new image URL
+    setFormData(prev => ({
+      ...prev,
+      images: [...prev.images, imageUrl]
+    }));
+    
+    toast.success("Image uploaded successfully!");
   };
 
-  const triggerFileUpload = () => {
-    fileInputRef.current?.click();
+  // Handle Cloudinary upload error
+  const handleUploadError = (error: any) => {
+    toast.error(`Upload failed: ${error.message || "Unknown error"}`);
   };
 
-  const triggerCameraUpload = () => {
-    // For mobile devices, this would trigger the camera
-    fileInputRef.current?.click();
+  // Remove an image from the images array
+  const removeImage = (urlToRemove: string) => {
+    setFormData(prev => ({
+      ...prev,
+      images: prev.images.filter(url => url !== urlToRemove)
+    }));
   };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    // In a real implementation, you would upload the image first
-    // and then include the URL in the formData
+    // Validate that at least one image is uploaded
+    if (formData.images.length === 0) {
+      toast.error("Please upload at least one image of the ground");
+      return;
+    }
 
     const res = await fetch("/api/grounds/request", {
       method: "POST",
@@ -391,57 +393,82 @@ export default function CreateGroundPage() {
               </div>
             )}
 
-            {/* Image Upload */}
+            {/* Cloudinary Image Upload */}
             <div className="space-y-2">
-              <Label className="text-sm font-medium">Ground Image</Label>
-              
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="hidden"
-                capture={isMobile ? "environment" : undefined}
-              />
+              <Label className="text-sm font-medium">Ground Images</Label>
               
               <div className="flex flex-col items-center">
-                {imagePreview ? (
-                  <div className="w-full aspect-video relative rounded-lg overflow-hidden mb-3">
-                    <img 
-                      src={imagePreview} 
-                      alt="Ground preview" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-full aspect-video bg-muted flex items-center justify-center rounded-lg mb-3">
-                    <p className="text-muted-foreground text-sm">No image selected</p>
+                {/* Display uploaded images */}
+                {formData.images.length > 0 && (
+                  <div className="grid grid-cols-2 gap-3 w-full mb-4">
+                    {formData.images.map((imageUrl, index) => (
+                      <div key={index} className="relative rounded-lg overflow-hidden aspect-video">
+                        <CldImage
+                          width={300}
+                          height={200}
+                          src={imageUrl.split('/').pop()?.split('.')[0] || ''}
+                          sizes="100vw"
+                          alt={`Ground image ${index + 1}`}
+                          className="object-cover w-full h-full"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          className="absolute top-2 right-2 w-8 h-8 p-0 rounded-full"
+                          onClick={() => removeImage(imageUrl)}
+                        >
+                          <X size={16} />
+                        </Button>
+                      </div>
+                    ))}
                   </div>
                 )}
                 
-                <div className="flex gap-3">
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    onClick={triggerFileUpload}
-                    className="flex gap-2 items-center"
-                  >
-                    <Upload size={16} />
-                    Upload Image
-                  </Button>
-                  
-                  {isMobile && (
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      onClick={triggerCameraUpload}
-                      className="flex gap-2 items-center"
-                    >
-                      <Camera size={16} />
-                      Take Photo
-                    </Button>
+                {/* Cloudinary Upload Widget */}
+                <CldUploadWidget
+                  uploadPreset="sports_grounds"
+                  onSuccess={handleUploadSuccess}
+                  onError={handleUploadError}
+                  options={{
+                    maxFiles: 4,
+                    sources: ['local', 'camera', 'url'],
+                    resourceType: 'image',
+                    clientAllowedFormats: ['jpg', 'jpeg', 'png', 'webp'],
+                    maxFileSize: 5000000, // 5MB
+                  }}
+                >
+                  {({ open }) => (
+                    <div className="flex gap-3">
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        onClick={() => open()}
+                        className="flex gap-2 items-center"
+                      >
+                        <Upload size={16} />
+                        Upload Image
+                      </Button>
+                      
+                      {isMobile && (
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          onClick={() => open('camera')}
+                          className="flex gap-2 items-center"
+                        >
+                          <Camera size={16} />
+                          Take Photo
+                        </Button>
+                      )}
+                    </div>
                   )}
-                </div>
+                </CldUploadWidget>
+                
+                {/* Upload requirements note */}
+                <p className="text-xs text-muted-foreground mt-2">
+                  Upload at least one image of the ground. Max 4 images, 5MB each.
+                </p>
               </div>
             </div>
 
