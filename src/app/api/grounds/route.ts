@@ -34,3 +34,25 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Failed to submit request" }, { status: 500 });
   }
 }
+
+
+export async function GET(req: Request) {
+  await connectDB();
+
+  const url = new URL(req.url);
+  const page = Number(url.searchParams.get("page")) || 1;
+  const limit = 5;
+  const skip = (page - 1) * limit;
+
+  const totalGrounds = await Ground.countDocuments({ status: "approved" });
+  const totalPages = Math.ceil(totalGrounds / limit);
+
+  const grounds = await Ground.find({ status: "approved" })
+    .populate("submittedBy", "name") // Fetch username
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  return NextResponse.json({ grounds, totalPages }, { status: 200 });
+}
+
