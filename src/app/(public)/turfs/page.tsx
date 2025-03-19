@@ -46,7 +46,7 @@ export default function TurfHome() {
       {/* Grid Layout for Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {grounds.map((ground) => (
-          <div key={ground._id} className="bg-white shadow-md rounded-lg overflow-hidden border">
+          <div key={ground._id} className="bg-white shadow-md  overflow-hidden border">
             {/* Image */}
             <div className="relative h-52">
               <Image
@@ -77,7 +77,7 @@ export default function TurfHome() {
 
               {/* View Details Button */}
               <div className="mt-3">
-                <Link href={`/grounds/${ground._id}`}>
+                <Link href={`/turfs/${ground._id}`}>
                   <Button variant="outline" className="w-full">
                     View Details
                   </Button>
