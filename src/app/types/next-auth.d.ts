@@ -5,6 +5,7 @@ declare module "next-auth" {
     user: {
       id: string;
       turftapPoints: number;
+      role : 'admin' | 'user';
     } & DefaultSession["user"];
   }
 }

@@ -8,7 +8,7 @@ export default function Navbar() {
   const { data: session } = useSession();
 
   return (
-    <nav className="px-6 py-4 flex justify-between items-center bg-white border-b border-gray-100 shadow-sm">
+    <nav className="px-6 py-4 flex justify-between items-center bg-white border-b">
       <Link href="/" className="text-lg font-medium text-gray-900">
         Turftap
       </Link>
