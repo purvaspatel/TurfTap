@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/db";
 import { Vote } from "@/app/models/Vote";
 import { Ground } from "@/app/models/Ground";
+import { User } from "@/app/models/User";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/auth";
 
@@ -21,6 +22,14 @@ export async function POST(req: Request) {
 
     const userId = session.user.id;
 
+    // Fetch the ground to get the submitter's ID
+    const ground = await Ground.findById(groundId);
+    if (!ground) {
+      return NextResponse.json({ error: "Ground not found" }, { status: 404 });
+    }
+
+    const submitterId = ground.submittedBy;
+
     // Check if user has already voted
     const existingVote = await Vote.findOne({ userId, groundId });
 
@@ -32,6 +41,9 @@ export async function POST(req: Request) {
         // Update Ground Vote Count
         if (voteType === "upvote") {
           await Ground.findByIdAndUpdate(groundId, { $inc: { upvotes: -1 } });
+          
+          // Decrease TurfTap points for the submitter
+          await User.findByIdAndUpdate(submitterId, { $inc: { turftapPoints: -1 } });
         } else {
           await Ground.findByIdAndUpdate(groundId, { $inc: { downvotes: -1 } });
         }
@@ -45,8 +57,14 @@ export async function POST(req: Request) {
         // Update Ground Vote Count
         if (voteType === "upvote") {
           await Ground.findByIdAndUpdate(groundId, { $inc: { upvotes: 1, downvotes: -1 } });
+          
+          // Increase TurfTap points for the submitter
+          await User.findByIdAndUpdate(submitterId, { $inc: { turftapPoints: 1 } });
         } else {
           await Ground.findByIdAndUpdate(groundId, { $inc: { downvotes: 1, upvotes: -1 } });
+          
+          // Decrease TurfTap points for the submitter if they had an upvote before
+          await User.findByIdAndUpdate(submitterId, { $inc: { turftapPoints: -1 } });
         }
 
         return NextResponse.json({ message: "Vote updated", userVote: voteType }, { status: 200 });
@@ -59,6 +77,9 @@ export async function POST(req: Request) {
     // Update Ground Vote Count
     if (voteType === "upvote") {
       await Ground.findByIdAndUpdate(groundId, { $inc: { upvotes: 1 } });
+      
+      // Increase TurfTap points for the submitter
+      await User.findByIdAndUpdate(submitterId, { $inc: { turftapPoints: 1 } });
     } else {
       await Ground.findByIdAndUpdate(groundId, { $inc: { downvotes: 1 } });
     }
@@ -70,7 +91,7 @@ export async function POST(req: Request) {
   }
 }
 
-// Also add this endpoint to get user's votes for initial load
+// Get user's votes for initial load
 export async function GET(req: Request) {
   try {
     await connectDB();

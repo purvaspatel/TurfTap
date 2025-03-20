@@ -177,7 +177,7 @@ export default function CreateGroundPage() {
 
     if (res.ok) {
       toast.success("Ground request submitted successfully!");
-      router.push("/grounds");
+      router.push("/grounds/u");
     } else {
       toast.error(`${data.error || "Failed to submit request"}`);
     }
