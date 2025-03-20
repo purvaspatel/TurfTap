@@ -6,6 +6,8 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 
 export default function TurfDetails() {
     interface Ground {
@@ -24,27 +26,113 @@ export default function TurfDetails() {
         isPaid: boolean;
         price?: number;
         images: string[];
-        submittedBy: { name: string };
+        submittedBy: { name: string; _id: string };
         upvotes: number;
         downvotes: number;
         createdAt: string;
     }
 
     const { id } = useParams();
+    const { data: session, status } = useSession();
     const [ground, setGround] = useState<Ground | null>(null);
     const [loading, setLoading] = useState(true);
+    const [userVote, setUserVote] = useState<"upvote" | "downvote" | null>(null);
+    const [upvotes, setUpvotes] = useState(0);
+    const [downvotes, setDownvotes] = useState(0);
 
+    // Fetch ground details
     useEffect(() => {
         async function fetchGround() {
             const res = await fetch(`/api/grounds/${id}`);
             if (res.ok) {
                 const data = await res.json();
                 setGround(data.ground);
+                setUpvotes(data.ground.upvotes);
+                setDownvotes(data.ground.downvotes);
             }
             setLoading(false);
         }
         fetchGround();
     }, [id]);
+
+    // Fetch user's vote (if logged in)
+    useEffect(() => {
+        async function fetchUserVote() {
+            if (session && session.user) {
+                const res = await fetch(`/api/grounds/vote?groundId=${id}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.vote) {
+                        setUserVote(data.vote.voteType);
+                    }
+                }
+            }
+        }
+        
+        if (status === "authenticated") {
+            fetchUserVote();
+        }
+    }, [id, session, status]);
+
+    // Handle voting
+    const handleVote = async (voteType: "upvote" | "downvote") => {
+        if (!session || !session.user) {
+            toast.error("Please sign in to vote");
+            return;
+        }
+
+        try {
+            const res = await fetch("/api/grounds/vote", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    groundId: id,
+                    voteType,
+                }),
+            });
+
+            if (!res.ok) throw new Error("Failed to vote");
+            
+            const data = await res.json();
+            
+            // Update UI based on response
+            if (data.userVote === "upvote") {
+                // If user upvoted
+                if (userVote === "downvote") {
+                    // If changing from downvote to upvote
+                    setDownvotes(prev => prev - 1);
+                } else if (userVote === null) {
+                    // New upvote
+                }
+                setUpvotes(prev => prev + 1);
+                setUserVote("upvote");
+            } else if (data.userVote === "downvote") {
+                // If user downvoted
+                if (userVote === "upvote") {
+                    // If changing from upvote to downvote
+                    setUpvotes(prev => prev - 1);
+                } else if (userVote === null) {
+                    // New downvote
+                }
+                setDownvotes(prev => prev + 1);
+                setUserVote("downvote");
+            } else {
+                // If removing vote
+                if (userVote === "upvote") {
+                    setUpvotes(prev => prev - 1);
+                } else if (userVote === "downvote") {
+                    setDownvotes(prev => prev - 1);
+                }
+                setUserVote(null);
+            }
+            
+        } catch (error) {
+            console.error("Error voting:", error);
+            toast.error("Failed to vote");
+        }
+    };
 
     if (loading) return <p className="text-center text-lg">Loading...</p>;
     if (!ground) return <p className="text-center text-lg">Ground not found</p>;
@@ -76,8 +164,6 @@ export default function TurfDetails() {
             {/* Description & Info */}
             <p className="text-gray-700 text-lg">{ground.description}</p>
 
-            {/* Location (Google Maps Embed) */}
-            {/* Location (Google Maps Embed) */}
             {/* Location (Google Maps Embed) */}
             <div className="mt-6">
                 <h3 className="text-xl font-semibold">Location</h3>
@@ -113,10 +199,24 @@ export default function TurfDetails() {
                 {new Date(ground.createdAt).toLocaleDateString()}
             </p>
 
-            {/* Dummy Votes */}
-            <div className="mt-6 flex items-center gap-6 text-gray-600">
-                <p>🔼 {ground.upvotes} Upvotes</p>
-                <p>🔽 {ground.downvotes} Downvotes</p>
+            {/* Dynamic Voting Section */}
+            <div className="mt-6 flex items-center gap-6">
+                <button 
+                    onClick={() => handleVote("upvote")}
+                    className={`flex items-center gap-2 ${userVote === "upvote" ? "text-green-600 font-bold" : "text-gray-600"}`}
+                    aria-label="Upvote"
+                >
+                    <span>🔼</span>
+                    <span>{upvotes} Upvotes</span>
+                </button>
+                <button 
+                    onClick={() => handleVote("downvote")}
+                    className={`flex items-center gap-2 ${userVote === "downvote" ? "text-red-600 font-bold" : "text-gray-600"}`}
+                    aria-label="Downvote"
+                >
+                    <span>🔽</span>
+                    <span>{downvotes} Downvotes</span>
+                </button>
             </div>
 
             {/* Static Nested Comments Placeholder */}

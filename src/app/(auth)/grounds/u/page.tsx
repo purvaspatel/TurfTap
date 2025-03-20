@@ -127,9 +127,7 @@ export default async function UserGroundsPage() {
                         <span className="text-xs text-gray-400">
                           Submitted: {new Date(ground.createdAt).toLocaleDateString()}
                         </span>
-                        <Button variant="ghost" size="sm" className="text-xs text-black hover:bg-gray-100 px-2 rounded-full">
-                          View Details
-                        </Button>
+                        
                       </div>
                     </div>
                   </CardContent>
