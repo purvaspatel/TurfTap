@@ -14,7 +14,7 @@ export default function Navbar() {
   return (
     <nav className="px-6 py-4 flex justify-between items-center bg-white border-b ">
       {/* Left Side (Logo + Turftap) */}
-      <Link href="/grounds" className="flex items-center gap-2">
+      <Link href="/turfs" className="flex items-center gap-2">
         <Image src="/TurfTapLogo.png" alt="Turftap Logo" width={32} height={32} />
         <span className="text-lg font-semibold text-gray-900">Turftap</span>
       </Link>
