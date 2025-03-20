@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import Comments from "@/components/user/comments"; // Import the Comments component
 
 export default function TurfDetails() {
     interface Ground {
@@ -219,20 +220,8 @@ export default function TurfDetails() {
                 </button>
             </div>
 
-            {/* Static Nested Comments Placeholder */}
-            <div className="mt-10 p-4 border rounded-lg">
-                <h3 className="text-xl font-semibold mb-4">Comments (Coming Soon)</h3>
-                <div className="space-y-4">
-                    <div className="p-3 border rounded-lg">
-                        <p className="font-medium">@User123</p>
-                        <p className="text-gray-700">This is a great place to play!</p>
-                    </div>
-                    <div className="p-3 border rounded-lg ml-6">
-                        <p className="font-medium">@User456</p>
-                        <p className="text-gray-700">I totally agree! Well maintained ground.</p>
-                    </div>
-                </div>
-            </div>
+            {/* Replace static comments with Comments component */}
+            {ground._id && <Comments groundId={ground._id} />}
         </div>
     );
 }
