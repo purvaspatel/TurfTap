@@ -6,8 +6,8 @@ import { authOptions } from "@/app/lib/auth";
 
 export async function POST(req: Request) {
   await connectDB();
-  const session = await getServerSession(authOptions);
 
+  const session = await getServerSession(authOptions);
   if (!session || !session.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -38,21 +38,45 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
   await connectDB();
-
   const url = new URL(req.url);
+
+  // Pagination
   const page = Number(url.searchParams.get("page")) || 1;
-  const limit = 5;
+  const limit = 6;
   const skip = (page - 1) * limit;
 
-  const totalGrounds = await Ground.countDocuments({ status: "approved" });
+  // Filters (Optional)
+  const sport = url.searchParams.get("sport");
+  const city = url.searchParams.get("city");
+  const state = url.searchParams.get("state");
+  const country = url.searchParams.get("country");
+  const sortBy = url.searchParams.get("sort") || "new"; // Default: Show latest first
+
+  // Build dynamic filter
+  const filter: any = { status: "approved" };  
+
+  if (sport) {
+    filter.category = { $elemMatch: { $regex: new RegExp(sport, "i") } }; // Matches any category containing sport
+  }
+
+  if (city) {
+    filter["location.city"] = { $regex: new RegExp(`^${city}$`, "i") }; // Case-insensitive city filter
+  }
+
+  // Sorting Logic
+  const sortOptions: any = { createdAt: -1 }; // Default: Show latest first
+  if (sortBy === "top") sortOptions.upvotes = -1; // Sort by upvotes
+
+  // Fetch grounds with filters & sorting
+  const totalGrounds = await Ground.countDocuments(filter);
   const totalPages = Math.ceil(totalGrounds / limit);
 
-  const grounds = await Ground.find({ status: "approved" })
-    .populate("submittedBy", "name") // Fetch username
-    .sort({ createdAt: -1 })
+  const grounds = await Ground.find(filter)
+    .populate("submittedBy", "name")
+    .sort(sortOptions)
     .skip(skip)
     .limit(limit);
 
+  console.log(grounds);
   return NextResponse.json({ grounds, totalPages }, { status: 200 });
 }
-

@@ -77,7 +77,7 @@ export default function TurfHome() {
 
               {/* View Details Button */}
               <div className="mt-3">
-                <Link href={`/turfs/${ground._id}`}>
+                <Link href={`/sports/${ground._id}`}>
                   <Button variant="outline" className="w-full">
                     View Details
                   </Button>

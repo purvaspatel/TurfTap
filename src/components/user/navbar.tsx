@@ -14,7 +14,7 @@ export default function Navbar() {
   return (
     <nav className="px-6 py-4 flex justify-between items-center bg-white border-b ">
       {/* Left Side (Logo + Turftap) */}
-      <Link href="/turfs" className="flex items-center gap-2">
+      <Link href="/sports" className="flex items-center gap-2">
         <Image src="/TurfTapLogo.png" alt="Turftap Logo" width={32} height={32} />
         <span className="text-lg font-semibold text-gray-900">Turftap</span>
       </Link>
@@ -22,10 +22,10 @@ export default function Navbar() {
       {/* Center (Navigation Links) */}
       <div className="flex space-x-6">
         <Link
-          href="/turfs"
+          href="/sports"
           className={cn(
             "text-sm font-medium px-3 py-2 rounded-md transition-colors",
-            pathname === "/turfs"
+            pathname === "/sports"
               ? "border border-green-500 text-green-600"
               : "text-gray-600 hover:text-gray-900"
           )}
