@@ -56,7 +56,7 @@ export default function TurfHome() {
   const getPaginationUrl = (pageNum: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", pageNum.toString());
-    return `/turfs?${params.toString()}`;
+    return `/sports?${params.toString()}`;
   };
 
   if (loading) return (

@@ -90,7 +90,7 @@ export default function SubBar() {
     
                 {/* Location Dropdown */}
                 <Select onValueChange={handleLocationChange}>
-                    <SelectTrigger className="w-40 h-8 border-0 bg-green-600 text-white text-sm rounded-full focus:ring-1 focus:ring-white focus:ring-offset-0">
+                    <SelectTrigger className="w-40 h-8 border-0 bg-wh text-white text-sm rounded-full focus:ring-1 focus:ring-white focus:ring-offset-0">
                         <div className="flex items-center">
                             <MapPin className="h-3 w-3 mr-1" />
                             <SelectValue placeholder={selectedLocation} />
