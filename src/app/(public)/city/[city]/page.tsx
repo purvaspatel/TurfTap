@@ -17,8 +17,8 @@ export default function SportsCityPage() {
     upvotes: number;
   }
 
-  const { sports, city } = useParams(); // Get dynamic sport & city from URL
-  console.log('sports :',sports,'city :',city);
+  const { city } = useParams(); // Get dynamic sport & city from URL
+  console.log('city :',city);
   const [grounds, setGrounds] = useState<Ground[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
@@ -29,7 +29,7 @@ export default function SportsCityPage() {
   
   useEffect(() => {
     async function fetchGrounds() {
-      const res = await fetch(`/api/grounds?sport=${sports}&city=${city}&sort=upvotes&page=${page}`);
+      const res = await fetch(`/api/grounds?city=${city}&sort=upvotes&page=${page}`);
       if (res.ok) {
         const data = await res.json();
         setGrounds(data.grounds);
@@ -38,13 +38,13 @@ export default function SportsCityPage() {
       setLoading(false);
     }
     fetchGrounds();
-  }, [sports, city, page]);
+  }, [city, page]);
 
   if (loading) return <p className="text-center text-lg">Loading grounds...</p>;
 
   return (
     <div className="container mx-auto max-w-6xl p-6">
-      <h1 className="text-3xl font-bold mb-6">Best places to play {sports} in {city}</h1>
+      <h1 className="text-3xl font-bold mb-6">Best places to play in {city}</h1>
 
       {/* Grid Layout for Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -99,7 +99,7 @@ export default function SportsCityPage() {
         <Button
           variant="outline"
           disabled={page <= 1}
-          onClick={() => router.push(`/sports/${sports}/${city}?page=${page - 1}`)}
+          onClick={() => router.push(`/sports/${city}?page=${page - 1}`)}
         >
           ← Previous
         </Button>
@@ -107,7 +107,7 @@ export default function SportsCityPage() {
         <Button
           variant="outline"
           disabled={page >= totalPages}
-          onClick={() => router.push(`/sports/${sports}/${city}?page=${page + 1}`)}
+          onClick={() => router.push(`/sports/${city}?page=${page + 1}`)}
         >
           Next →
         </Button>

@@ -55,12 +55,22 @@ export async function GET(req: Request) {
   // Build dynamic filter
   const filter: any = { status: "approved" };  
 
-  if (sport) {
+  // Sport filter - now works with both array elements and partial matches
+  if (sport && sport !== "all") {
     filter.category = { $elemMatch: { $regex: new RegExp(sport, "i") } }; // Matches any category containing sport
   }
 
-  if (city) {
-    filter["location.city"] = { $regex: new RegExp(`^${city}$`, "i") }; // Case-insensitive city filter
+  // Location filters
+  if (city && city !== "all") {
+    filter["location.city"] = { $regex: new RegExp(`^${city}$`, "i") }; // Case-insensitive exact city match
+  }
+
+  if (state && state !== "all") {
+    filter["location.state"] = { $regex: new RegExp(`^${state}$`, "i") }; // Case-insensitive exact state match
+  }
+
+  if (country && country !== "all") {
+    filter["location.country"] = { $regex: new RegExp(`^${country}$`, "i") }; // Case-insensitive exact country match
   }
 
   // Sorting Logic

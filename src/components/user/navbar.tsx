@@ -30,7 +30,7 @@ export default function Navbar() {
               : "text-gray-600 hover:text-gray-900"
           )}
         >
-          Explore Turfs
+          Explore
         </Link>
 
         <Link
