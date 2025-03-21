@@ -58,17 +58,9 @@ export default async function ProfilePage() {
                     </div>
 
                     {/* Points Display */}
-                    <div className="bg-gray-50 px-6 py-4 rounded-xl w-full text-center">
-                        <p className="text-sm text-gray-500">Turftap Points</p>
-                        <p className="text-3xl font-light mt-1">{session.user.turftapPoints || 0}</p>
-                    </div>
-
-                    {/* Activity Section */}
-                    <div className="w-full pt-4">
-                        <p className="text-xs text-gray-400 mb-3">Recent Activity</p>
-                        <div className="bg-gray-50 rounded-xl p-4 text-center">
-                            <p className="text-sm text-gray-500">No recent activity</p>
-                        </div>
+                    <div className="bg-green-100 px-6 py-4 rounded-xl w-full text-center">
+                        <p className="text-sm text-gray-500 font-semibold">Turftap Points</p>
+                        <p className="text-3xl font-bold mt-1">{session.user.turftapPoints || 0}</p>
                     </div>
                 </div>
             </Card>

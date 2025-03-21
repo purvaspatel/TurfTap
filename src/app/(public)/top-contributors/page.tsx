@@ -3,7 +3,7 @@
 import TopContributors from "@/components/user/topcontributors";
 
 export const metadata = {
-  title: "Top Contributors - TurfTap",
+  title: "Top Contributors - TurfTap",  
   description: "View the top contributors on TurfTap based on their points"
 };
 

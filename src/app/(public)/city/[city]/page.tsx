@@ -1,21 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-export default function TurfHome() {
+export default function SportsCityPage() {
   interface Ground {
     _id: string;
     title: string;
     images: string[];
     submittedBy: { name: string };
     category: string[];
+    upvotes: number;
   }
 
+  const { city } = useParams(); // Get dynamic sport & city from URL
+  console.log('city :',city);
   const [grounds, setGrounds] = useState<Ground[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
@@ -23,10 +26,10 @@ export default function TurfHome() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
-
+  
   useEffect(() => {
     async function fetchGrounds() {
-      const res = await fetch(`/api/grounds?page=${page}`);
+      const res = await fetch(`/api/grounds?city=${city}&sort=upvotes&page=${page}`);
       if (res.ok) {
         const data = await res.json();
         setGrounds(data.grounds);
@@ -35,18 +38,18 @@ export default function TurfHome() {
       setLoading(false);
     }
     fetchGrounds();
-  }, [page]);
+  }, [city, page]);
 
-  if (loading) return <p className="text-center text-lg">Loading turfs...</p>;
+  if (loading) return <p className="text-center text-lg">Loading grounds...</p>;
 
   return (
     <div className="container mx-auto max-w-6xl p-6">
-      <h1 className="text-3xl font-bold mb-6">Explore Nearby Turfs & Grounds</h1>
+      <h1 className="text-3xl font-bold mb-6">Best places to play in {city}</h1>
 
       {/* Grid Layout for Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {grounds.map((ground) => (
-          <div key={ground._id} className="bg-white shadow-md  overflow-hidden border">
+          <div key={ground._id} className="bg-white shadow-md overflow-hidden border">
             {/* Image */}
             <div className="relative h-52">
               <Image
@@ -75,9 +78,12 @@ export default function TurfHome() {
                 ))}
               </div>
 
+              {/* Upvotes */}
+              <p className="text-sm text-gray-600 mt-2">{ground.upvotes} Upvotes</p>
+
               {/* View Details Button */}
               <div className="mt-3">
-                <Link href={`/turfs/${ground._id}`}>
+                <Link href={`/sports/${ground._id}`}>
                   <Button variant="outline" className="w-full">
                     View Details
                   </Button>
@@ -93,7 +99,7 @@ export default function TurfHome() {
         <Button
           variant="outline"
           disabled={page <= 1}
-          onClick={() => router.push(`/turfs?page=${page - 1}`)}
+          onClick={() => router.push(`/sports/${city}?page=${page - 1}`)}
         >
           ← Previous
         </Button>
@@ -101,7 +107,7 @@ export default function TurfHome() {
         <Button
           variant="outline"
           disabled={page >= totalPages}
-          onClick={() => router.push(`/turfs?page=${page + 1}`)}
+          onClick={() => router.push(`/sports/${city}?page=${page + 1}`)}
         >
           Next →
         </Button>
