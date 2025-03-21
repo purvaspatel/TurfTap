@@ -6,7 +6,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import SubBar from "@/components/user/subbar";
 export default function SportsCityPage() {
   interface Ground {
     _id: string;
@@ -44,11 +43,6 @@ export default function SportsCityPage() {
 
   return (
     <>
-    
-    
-    <SubBar/>
-    
-    
     <div className="container mx-auto max-w-6xl p-6">
       <h1 className="text-3xl font-bold mb-6">Best places to play {sports}</h1>
 
