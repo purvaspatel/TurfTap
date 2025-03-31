@@ -48,7 +48,7 @@ export default function Footer() {
               <span className="text-xl font-bold text-green-400">Turf Tap</span>
             </div>
             <p className="text-gray-400 text-sm mt-4">
-              A community powered 
+              A community powered sports turfs and ground exploration platform.
             </p>
             <div className="flex flex-col space-y-2 mt-6">
               <div className="flex items-center space-x-3">
