@@ -1,13 +1,14 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import LoadingSpinner from "@/components/isLoading";
-export default function SportsCityPage() {
+
+// Create a client component that uses the search params
+function SportsContent() {
   interface Ground {
     _id: string;
     title: string;
@@ -17,8 +18,7 @@ export default function SportsCityPage() {
     upvotes: number;
   }
 
-  const { city } = useParams(); // Get dynamic sport & city from URL
-  console.log('city :',city);
+  const { city } = useParams();
   const [grounds, setGrounds] = useState<Ground[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
@@ -113,5 +113,14 @@ export default function SportsCityPage() {
         </Button>
       </div>
     </div>
+  );
+}
+
+// Main component with Suspense boundary
+export default function SportsCityPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <SportsContent />
+    </Suspense>
   );
 }

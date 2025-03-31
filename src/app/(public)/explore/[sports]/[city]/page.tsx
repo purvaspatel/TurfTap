@@ -1,6 +1,5 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { useEffect, useState,Suspense } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import NoResults from "@/components/noresults";
 import LoadingSpinner from "@/components/isLoading";
-export default function SportsCityPage() {
+
+function SportsCityPageContent() {
   interface Ground {
     _id: string;
     title: string;
@@ -121,4 +121,12 @@ export default function SportsCityPage() {
     </div>
   );
 
+}
+// Main component with Suspense boundary
+export default function SportsCityPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <SportsCityPageContent />
+    </Suspense>
+  );
 }
