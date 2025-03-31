@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import SubBar from "@/components/user/subbar";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
+import LoadingSpinner from "@/components/isLoading";
 import Navbar from "@/components/user/navbar";
 export default function TurfHome() {
   interface Ground {
@@ -64,9 +65,7 @@ export default function TurfHome() {
   if (loading) return (
     <>
 
-      <div className="container mx-auto max-w-6xl p-6">
-        <p className="text-center text-lg">Loading turfs...</p>
-      </div>
+      <LoadingSpinner/>
     </>
   );
 
