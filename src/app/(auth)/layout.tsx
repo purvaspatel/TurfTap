@@ -2,6 +2,7 @@
 
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "sonner";
+import LoadingSpinner from "@/components/isLoading";
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
@@ -19,9 +20,7 @@ function AuthContent({ children }: { children: React.ReactNode }) {
 
   if (status === "loading") {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-pulse text-gray-500">Loading...</div>
-      </div>
+      <LoadingSpinner />
     );
   }
 
@@ -31,10 +30,10 @@ function AuthContent({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-    <Toaster position="top-right" />
-    
+      <Toaster position="top-right" />
+
       <Navbar />
-      
+
       {children}
     </>
   );

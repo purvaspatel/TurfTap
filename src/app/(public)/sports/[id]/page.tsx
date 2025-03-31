@@ -4,11 +4,17 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import Comments from "@/components/user/comments"; // Import the Comments component
+import Comments from "@/components/user/comments";
+import LoadingSpinner from "@/components/isLoading";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 export default function TurfDetails() {
     interface Ground {
@@ -135,7 +141,7 @@ export default function TurfDetails() {
         }
     };
 
-    if (loading) return <p className="text-center text-lg">Loading...</p>;
+    if (loading) return <LoadingSpinner/>;
     if (!ground) return <p className="text-center text-lg">Ground not found</p>;
 
     return (
@@ -143,7 +149,7 @@ export default function TurfDetails() {
             {/* Title & Tags */}
             <div className="flex justify-between items-center">
                 <h1 className="text-3xl font-bold">{ground.title}</h1>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                     {ground.category.map((tag) => (
                         <Badge key={tag} variant="outline">
                             {tag}
@@ -152,14 +158,37 @@ export default function TurfDetails() {
                 </div>
             </div>
 
-            {/* Image */}
-            <div className="relative w-full h-96 my-6">
-                <Image
-                    src={ground.images[0] || "/placeholder.png"}
-                    alt={ground.title}
-                    fill
-                    className="object-cover rounded-lg"
-                />
+            {/* Image Carousel */}
+            <div className="my-6">
+                {ground.images && ground.images.length > 0 ? (
+                    <Carousel className="w-full">
+                        <CarouselContent>
+                            {ground.images.map((image, index) => (
+                                <CarouselItem key={index}>
+                                    <div className="relative w-full h-96">
+                                        <Image
+                                            src={image || "/placeholder.png"}
+                                            alt={`${ground.title} - Image ${index + 1}`}
+                                            fill
+                                            className="object-cover rounded-lg"
+                                        />
+                                    </div>
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="left-2" />
+                        <CarouselNext className="right-2" />
+                    </Carousel>
+                ) : (
+                    <div className="relative w-full h-96">
+                        <Image
+                            src="/placeholder.png"
+                            alt={ground.title}
+                            fill
+                            className="object-cover rounded-lg"
+                        />
+                    </div>
+                )}
             </div>
 
             {/* Description & Info */}
@@ -190,7 +219,7 @@ export default function TurfDetails() {
                 </p>
                 <p className="text-gray-700">
                     <span className="font-semibold">Price:</span>{" "}
-                    {ground.isPaid ? `$${ground.price}` : "Free"}
+                    {ground.isPaid ? `(INR. Rs.) ${ground.price}` : "Free"}
                 </p>
             </div>
 
@@ -220,7 +249,7 @@ export default function TurfDetails() {
                 </button>
             </div>
 
-            {/* Replace static comments with Comments component */}
+            {/* Comments component */}
             {ground._id && <Comments groundId={ground._id} />}
         </div>
     );

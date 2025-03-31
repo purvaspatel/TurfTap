@@ -23,6 +23,23 @@ export default function TopContributors({ limit = 10 }: TopContributorsProps) {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect screen size
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    // Set initial state
+    handleResize();
+    
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+    
+    // Cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Fetch top contributors
   useEffect(() => {
@@ -73,7 +90,7 @@ export default function TopContributors({ limit = 10 }: TopContributorsProps) {
   return (
     <Card className="w-full max-w-3xl mx-auto">
       <CardHeader>
-        <CardTitle className="text-center text-2xl font-bold">Top Contributors</CardTitle>
+        <CardTitle className="text-center text-xl sm:text-2xl font-bold">Top Contributors</CardTitle>
       </CardHeader>
       <CardContent>
         {loading && (
@@ -96,15 +113,18 @@ export default function TopContributors({ limit = 10 }: TopContributorsProps) {
         
         {!loading && !error && users.length > 0 && (
           <>
-            <div className="space-y-4">
+            <div className="space-y-3">
               {users.map((user, index) => (
-                <div key={user._id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-center gap-4">
+                <div 
+                  key={user._id} 
+                  className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg"
+                >
+                  <div className="flex items-center gap-2 sm:gap-4">
                     <div className="relative">
                       <div className={`absolute -top-1 -left-1 ${getMedalColor(index + (page - 1) * limit)}`}>
-                        <Medal size={16} />
+                        <Medal size={isMobile ? 12 : 16} />
                       </div>
-                      <div className="relative h-10 w-10 rounded-full overflow-hidden border border-gray-200">
+                      <div className="relative h-8 w-8 sm:h-10 sm:w-10 rounded-full overflow-hidden border border-gray-200">
                         {user.profileImage ? (
                           <Image 
                             src={user.profileImage} 
@@ -117,7 +137,7 @@ export default function TopContributors({ limit = 10 }: TopContributorsProps) {
                           />
                         ) : (
                           <div className="w-full h-full bg-gray-300 flex items-center justify-center">
-                            <span className="text-gray-600 font-semibold">
+                            <span className="text-gray-600 font-semibold text-xs sm:text-base">
                               {user.name.charAt(0).toUpperCase()}
                             </span>
                           </div>
@@ -125,43 +145,47 @@ export default function TopContributors({ limit = 10 }: TopContributorsProps) {
                       </div>
                     </div>
                     <div>
-                      <p className="font-medium">{user.name}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="font-medium text-sm sm:text-base truncate max-w-32 sm:max-w-full">
+                        {user.name}
+                      </p>
+                      <p className="text-xs sm:text-sm text-gray-500">
                         Rank: <span className="font-semibold">#{index + 1 + (page - 1) * limit}</span>
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold">{user.turftapPoints}</span>
-                    <span className="text-sm text-gray-500">points</span>
+                  <div className="flex items-center gap-1 sm:gap-2">
+                    <span className="text-base sm:text-lg font-bold">{user.turftapPoints}</span>
+                    <span className="text-xs sm:text-sm text-gray-500">points</span>
                   </div>
                 </div>
               ))}
             </div>
             
             {/* Pagination */}
-            <div className="flex justify-between items-center mt-6">
-              <div className="text-sm text-gray-500">
+            <div className="flex flex-col sm:flex-row justify-between items-center mt-6 gap-3">
+              <div className="text-xs sm:text-sm text-gray-500 order-2 sm:order-1">
                 Page {page} of {totalPages}
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-full sm:w-auto justify-between sm:justify-start order-1 sm:order-2">
                 <Button 
                   variant="outline" 
                   size="sm" 
                   onClick={handlePrevPage} 
                   disabled={page === 1}
+                  className="text-xs sm:text-sm py-1 px-2 sm:py-2 sm:px-3 h-8"
                 >
-                  <ChevronLeft className="h-4 w-4 mr-1" />
-                  Previous
+                  <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                  {isMobile ? "Prev" : "Previous"}
                 </Button>
                 <Button 
                   variant="outline" 
                   size="sm" 
                   onClick={handleNextPage} 
                   disabled={page === totalPages}
+                  className="text-xs sm:text-sm py-1 px-2 sm:py-2 sm:px-3 h-8"
                 >
                   Next
-                  <ChevronRight className="h-4 w-4 ml-1" />
+                  <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 ml-1" />
                 </Button>
               </div>
             </div>
