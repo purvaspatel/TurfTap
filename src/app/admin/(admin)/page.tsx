@@ -1,13 +1,11 @@
 // app/admin/(admin)/dashboard/page.tsx
 "use client";
-
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
 export default function AdminDashboard() {
-  const router = useRouter();
 
   // Add this to prevent browser back after logout
   useEffect(() => {
