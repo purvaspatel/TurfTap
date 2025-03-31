@@ -1,4 +1,4 @@
-"use client";
+
 import { connectDB } from "@/app/lib/db";
 import { Ground } from "@/app/models/Ground";
 import Link from "next/link";

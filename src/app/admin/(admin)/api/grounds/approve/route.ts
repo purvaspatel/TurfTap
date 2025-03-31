@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/db";
 import { Ground } from "@/app/models/Ground";
-import { User } from "@/app/models/User"; // Ensure User model exists
+import { User } from "@/app/models/User"; 
 import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
