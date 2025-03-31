@@ -1,5 +1,4 @@
 // app/top-contributors/page.tsx
-
 import TopContributors from "@/components/user/topcontributors";
 
 export const metadata = {
