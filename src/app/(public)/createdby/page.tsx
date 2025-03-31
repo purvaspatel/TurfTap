@@ -1,4 +1,5 @@
 // app/contact/page.tsx
+"use client";
 import Image from "next/image"
 import { Metadata } from "next";
 import { Mail, Github, Instagram } from "lucide-react"
