@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -40,8 +40,6 @@ import { Check, Camera, Upload, X, ChevronsUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-import { cloudinaryConfig } from '@/app/lib/cloudinary';
-
 const sportCategories = [
   { label: "Football", value: "football" },
   { label: "Cricket", value: "cricket" },
@@ -57,7 +55,6 @@ const sportCategories = [
 ];
 
 export default function CreateGroundPage() {
-  const { data: session } = useSession();
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);

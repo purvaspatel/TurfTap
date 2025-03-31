@@ -1,275 +1,174 @@
-import React from 'react';
-import { ChevronRight, MapPin, Users, Calendar, Award, Search } from 'lucide-react';
+"use client";
 
-const LandingPage = () => {
-  return (
-    <div className="flex flex-col min-h-screen">
-      {/* Navigation */}
-      <nav className="bg-white shadow-sm px-6 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center">
-            <span className="text-2xl font-bold text-green-600">SportSpot</span>
-          </div>
-          
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-gray-600 hover:text-green-600">Features</a>
-            <a href="#how-it-works" className="text-gray-600 hover:text-green-600">How it Works</a>
-            <a href="#testimonials" className="text-gray-600 hover:text-green-600">Testimonials</a>
-          </div>
-          
-          <div className="flex items-center space-x-4">
-            <button className="px-4 py-2 text-gray-600 hover:text-green-600">Log In</button>
-            <button className="px-4 py-2 bg-green-600 text-white rounded-full hover:bg-green-700">Sign Up</button>
-          </div>
-        </div>
-      </nav>
-      
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-green-500 to-green-600 text-white">
-        <div className="max-w-7xl mx-auto px-6 py-20 md:py-28">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Discover Local Sports Events & Communities</h1>
-              <p className="text-lg mb-8">Connect with athletes, find games, and explore sports activities in your area - all powered by our community.</p>
-              
-              <div className="bg-white rounded-full p-2 flex items-center shadow-lg mb-8">
-                <div className="flex-1 flex items-center mx-4">
-                  <Search className="h-5 w-5 text-gray-400 mr-2" />
-                  <input 
-                    type="text" 
-                    placeholder="Search for sports or events..." 
-                    className="bg-transparent w-full outline-none text-gray-800"
-                  />
-                </div>
-                <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full">
-                  Explore
-                </button>
-              </div>
-              
-              <div className="flex items-center text-sm">
-                <span>Popular:</span>
-                <div className="flex ml-2 space-x-2">
-                  <span className="bg-green-600/20 px-3 py-1 rounded-full">Basketball</span>
-                  <span className="bg-green-600/20 px-3 py-1 rounded-full">Soccer</span>
-                  <span className="bg-green-600/20 px-3 py-1 rounded-full">Tennis</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="hidden md:block relative h-96">
-              <div className="absolute inset-0 bg-white/10 backdrop-blur-sm rounded-xl overflow-hidden shadow-xl">
-                {/* This would be an image in production */}
-                <div className="h-full w-full bg-green-300/30 flex items-center justify-center">
-                  <span className="text-lg">Sports community image</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Stats Section */}
-      <section className="bg-white py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div className="p-6">
-              <p className="text-3xl font-bold text-green-600 mb-2">10,000+</p>
-              <p className="text-gray-600">Active Users</p>
-            </div>
-            <div className="p-6">
-              <p className="text-3xl font-bold text-green-600 mb-2">500+</p>
-              <p className="text-gray-600">Sports Events</p>
-            </div>
-            <div className="p-6">
-              <p className="text-3xl font-bold text-green-600 mb-2">50+</p>
-              <p className="text-gray-600">Sports Categories</p>
-            </div>
-            <div className="p-6">
-              <p className="text-3xl font-bold text-green-600 mb-2">200+</p>
-              <p className="text-gray-600">Communities</p>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Features Section */}
-      <section id="features" className="bg-gray-50 py-16">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">Discover the SportSpot Experience</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">Our platform connects sports enthusiasts and makes finding local activities easier than ever</p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-xl shadow-sm">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-6">
-                <MapPin className="h-6 w-6 text-green-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Location-Based Discovery</h3>
-              <p className="text-gray-600">Find sports events and communities near you with our easy-to-use location filters.</p>
-            </div>
-            
-            <div className="bg-white p-8 rounded-xl shadow-sm">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-6">
-                <Users className="h-6 w-6 text-green-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Community-Driven</h3>
-              <p className="text-gray-600">Connect with like-minded athletes and join communities based on your interests.</p>
-            </div>
-            
-            <div className="bg-white p-8 rounded-xl shadow-sm">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-6">
-                <Calendar className="h-6 w-6 text-green-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Event Organization</h3>
-              <p className="text-gray-600">Create and manage your own sports events or join existing ones with a few clicks.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* How It Works */}
-      <section id="how-it-works" className="py-16">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">How SportSpot Works</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">Get started in just a few simple steps</p>
-          </div>
-          
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white font-bold">1</div>
-              <h3 className="text-xl font-semibold mb-3">Create an Account</h3>
-              <p className="text-gray-600">Sign up and create your sports profile</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white font-bold">2</div>
-              <h3 className="text-xl font-semibold mb-3">Set Preferences</h3>
-              <p className="text-gray-600">Choose your favorite sports and location</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white font-bold">3</div>
-              <h3 className="text-xl font-semibold mb-3">Explore Events</h3>
-              <p className="text-gray-600">Browse and join events that interest you</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white font-bold">4</div>
-              <h3 className="text-xl font-semibold mb-3">Connect & Play</h3>
-              <p className="text-gray-600">Meet new people and enjoy sports together</p>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Testimonials */}
-      <section id="testimonials" className="bg-gray-50 py-16">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">What Our Community Says</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">Join thousands of satisfied users who found their sports community</p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-xl shadow-sm">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 rounded-full bg-green-200 flex items-center justify-center mr-4">
-                  <span className="font-bold text-green-600">JD</span>
-                </div>
-                <div>
-                  <h4 className="font-semibold">John Doe</h4>
-                  <p className="text-sm text-gray-500">Basketball Enthusiast</p>
-                </div>
-              </div>
-              <p className="text-gray-600">"I've found an amazing basketball community in my neighborhood. We play twice a week now thanks to SportSpot!"</p>
-            </div>
-            
-            <div className="bg-white p-8 rounded-xl shadow-sm">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 rounded-full bg-green-200 flex items-center justify-center mr-4">
-                  <span className="font-bold text-green-600">SD</span>
-                </div>
-                <div>
-                  <h4 className="font-semibold">Sarah Davis</h4>
-                  <p className="text-sm text-gray-500">Tennis Player</p>
-                </div>
-              </div>
-              <p className="text-gray-600">"As someone new to the city, SportSpot helped me find tennis partners and events. It's been a game-changer!"</p>
-            </div>
-            
-            <div className="bg-white p-8 rounded-xl shadow-sm">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 rounded-full bg-green-200 flex items-center justify-center mr-4">
-                  <span className="font-bold text-green-600">MJ</span>
-                </div>
-                <div>
-                  <h4 className="font-semibold">Mike Johnson</h4>
-                  <p className="text-sm text-gray-500">Soccer Coach</p>
-                </div>
-              </div>
-              <p className="text-gray-600">"I organize weekly soccer games for my community. SportSpot makes it easy to manage events and find new players."</p>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* CTA Section */}
-      <section className="bg-green-600 text-white py-16">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Find Your Sports Community?</h2>
-          <p className="text-lg mb-8 max-w-2xl mx-auto">Join thousands of sports enthusiasts already using SportSpot to connect and play</p>
-          <button className="bg-white text-green-600 px-8 py-3 rounded-full text-lg font-medium hover:bg-gray-100">
-            Get Started for Free
-          </button>
-        </div>
-      </section>
-      
-      {/* Footer */}
-      <footer className="bg-gray-800 text-gray-300 py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <h3 className="text-xl font-bold text-white mb-4">SportSpot</h3>
-              <p className="text-sm">Connecting sports enthusiasts and communities since 2023</p>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Product</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white">Features</a></li>
-                <li><a href="#" className="hover:text-white">Pricing</a></li>
-                <li><a href="#" className="hover:text-white">FAQ</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white">About Us</a></li>
-                <li><a href="#" className="hover:text-white">Careers</a></li>
-                <li><a href="#" className="hover:text-white">Contact</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Legal</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-white">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-white">Cookie Policy</a></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="pt-8 border-t border-gray-700 text-sm text-center">
-            <p>© 2025 SportSpot. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import SubBar from "@/components/user/subbar";
+import SessionProviderWrapper from "@/components/SessionProviderWrapper";
+import Navbar from "@/components/user/navbar";
+export default function TurfHome() {
+  interface Ground {
+    _id: string;
+    title: string;
+    images: string[];
+    submittedBy: { name: string };
+    category: string[];
+    city?: string;
+    state?: string;
+    upvotes: number;
+  }
+
+  const [grounds, setGrounds] = useState<Ground[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const page = Number(searchParams.get("page")) || 1;
+  const sport = searchParams.get("sport") || "all";
+  const city = searchParams.get("city") || "all";
+  const state = searchParams.get("state") || "all";
+  const sort = searchParams.get("sort") || "top";
+
+  useEffect(() => {
+    async function fetchGrounds() {
+      // Build API URL with all filters
+      let apiUrl = `/api/grounds?page=${page}&sort=${sort}`;
+      if (sport !== "all") apiUrl += `&sport=${sport}`;
+      if (city !== "all") apiUrl += `&city=${city}`;
+      if (state !== "all") apiUrl += `&state=${state}`;
+
+      setLoading(true);
+      const res = await fetch(apiUrl);
+
+      if (res.ok) {
+        const data = await res.json();
+        setGrounds(data.grounds);
+        setTotalPages(data.totalPages);
+      }
+      setLoading(false);
+    }
+    fetchGrounds();
+  }, [page, sport, city, state, sort]);
+
+
+  const getPaginationUrl = (pageNum: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", pageNum.toString());
+    return `/sports?${params.toString()}`;
+  };
+
+  if (loading) return (
+    <>
+
+      <div className="container mx-auto max-w-6xl p-6">
+        <p className="text-center text-lg">Loading turfs...</p>
+      </div>
+    </>
   );
-};
 
-export default LandingPage;
+  return (
+    <>
+      <SessionProviderWrapper>
+        <Navbar />
+        <SubBar />
+        <div className="container mx-auto max-w-6xl p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-bold">Explore Nearby Turfs & Grounds</h1>
+
+            <div className="text-sm text-gray-600">
+              {sport !== "all" && <span className="font-medium">{sport.charAt(0).toUpperCase() + sport.slice(1)} </span>}
+              {city !== "all" && <span>in {city.charAt(0).toUpperCase() + city.slice(1)} </span>}
+              {state !== "all" && <span>({state.charAt(0).toUpperCase() + state.slice(1)})</span>}
+            </div>
+          </div>
+
+          {grounds.length === 0 ? (
+            <div className="text-center py-12">
+              <h2 className="text-xl font-medium text-gray-700">No turfs found with these filters</h2>
+              <p className="text-gray-500 mt-2">Try changing your filter criteria</p>
+            </div>
+          ) : (
+            <>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {grounds.map((ground) => (
+                  <div key={ground._id} className="bg-white shadow-md overflow-hidden border">
+
+                    <div className="relative h-52">
+                      <Image
+                        src={ground.images[0] || "/placeholder.png"}
+                        alt={ground.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+
+
+                    <div className="p-4">
+                      <h2 className="text-lg font-semibold line-clamp-1">{ground.title}</h2>
+
+
+                      <p className="text-sm text-gray-600">
+                        Posted by <span className="font-medium">@{ground.submittedBy.name}</span>
+                      </p>
+
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {ground.category.map((tag) => (
+                          <Badge key={tag} variant="outline" className="text-xs">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+
+                      <p className="text-sm text-gray-600 mt-2">{ground.upvotes} Upvotes</p>
+
+
+                      {(ground.city || ground.state) && (
+                        <p className="text-xs text-gray-500 mt-2">
+                          {ground.city && <span>{ground.city}, </span>}
+                          {ground.state && <span>{ground.state}</span>}
+                        </p>
+                      )}
+
+
+                      <div className="mt-3">
+                        <Link href={`/sports/${ground._id}`}>
+                          <Button variant="outline" className="w-full">
+                            View Details
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+
+              <div className="mt-8 flex justify-between">
+                <Button
+                  variant="outline"
+                  disabled={page <= 1}
+                  onClick={() => router.push(getPaginationUrl(page - 1))}
+                >
+                  ← Previous
+                </Button>
+                <span className="text-gray-700 text-sm">Page {page} of {totalPages}</span>
+                <Button
+                  variant="outline"
+                  disabled={page >= totalPages}
+                  onClick={() => router.push(getPaginationUrl(page + 1))}
+                >
+                  Next →
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
+      </SessionProviderWrapper>
+    </>
+  );
+}

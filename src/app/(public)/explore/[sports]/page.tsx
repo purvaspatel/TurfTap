@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import LoadingSpinner from "@/components/isLoading";
 export default function SportsCityPage() {
   interface Ground {
     _id: string;
@@ -39,7 +40,7 @@ export default function SportsCityPage() {
     fetchGrounds();
   }, [sports, page]);
 
-  if (loading) return <p className="text-center text-lg">Loading grounds...</p>;
+  if (loading) return <LoadingSpinner/>;
 
   return (
     <>

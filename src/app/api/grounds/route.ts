@@ -42,7 +42,7 @@ export async function GET(req: Request) {
 
   // Pagination
   const page = Number(url.searchParams.get("page")) || 1;
-  const limit = 20;
+  const limit = 24;
   const skip = (page - 1) * limit;
 
   // Filters (Optional)

@@ -7,16 +7,18 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import SubBar from "@/components/user/subbar";
+import LoadingSpinner from "@/components/isLoading";
 
 export default function TurfHome() {
   interface Ground {
-    _id: string;
-    title: string;
-    images: string[];
-    submittedBy: { name: string };
-    category: string[];
-    city?: string;
-    state?: string;
+      _id: string;
+      title: string;
+      images: string[];
+      submittedBy: { name: string };
+      category: string[];
+      city?: string;
+      state?: string;
+      upvotes: number; 
   }
 
   const [grounds, setGrounds] = useState<Ground[]>([]);
@@ -52,7 +54,7 @@ export default function TurfHome() {
     fetchGrounds();
   }, [page, sport, city, state, sort]);
 
-  // Generate URL for pagination that preserves all filters
+
   const getPaginationUrl = (pageNum: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", pageNum.toString());
@@ -61,10 +63,7 @@ export default function TurfHome() {
 
   if (loading) return (
     <>
-      
-      <div className="container mx-auto max-w-6xl p-6">
-        <p className="text-center text-lg">Loading turfs...</p>
-      </div>
+      <LoadingSpinner/>
     </>
   );
 
@@ -74,8 +73,7 @@ export default function TurfHome() {
       <div className="container mx-auto max-w-6xl p-6">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Explore Nearby Turfs & Grounds</h1>
-          
-          {/* Filter summary */}
+
           <div className="text-sm text-gray-600">
             {sport !== "all" && <span className="font-medium">{sport.charAt(0).toUpperCase() + sport.slice(1)} </span>}
             {city !== "all" && <span>in {city.charAt(0).toUpperCase() + city.slice(1)} </span>}
@@ -90,11 +88,11 @@ export default function TurfHome() {
           </div>
         ) : (
           <>
-            {/* Grid Layout for Cards */}
+           
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {grounds.map((ground) => (
                 <div key={ground._id} className="bg-white shadow-md overflow-hidden border">
-                  {/* Image */}
+                 
                   <div className="relative h-52">
                     <Image
                       src={ground.images[0] || "/placeholder.png"}
@@ -104,16 +102,15 @@ export default function TurfHome() {
                     />
                   </div>
 
-                  {/* Content */}
+              
                   <div className="p-4">
                     <h2 className="text-lg font-semibold line-clamp-1">{ground.title}</h2>
 
-                    {/* Posted By */}
+
                     <p className="text-sm text-gray-600">
                       Posted by <span className="font-medium">@{ground.submittedBy.name}</span>
                     </p>
 
-                    {/* Tags */}
                     <div className="mt-2 flex flex-wrap gap-2">
                       {ground.category.map((tag) => (
                         <Badge key={tag} variant="outline" className="text-xs">
@@ -122,7 +119,9 @@ export default function TurfHome() {
                       ))}
                     </div>
 
-                    {/* Location info if available */}
+                    <p className="text-sm text-gray-600 mt-2">{ground.upvotes} Upvotes</p>
+
+                
                     {(ground.city || ground.state) && (
                       <p className="text-xs text-gray-500 mt-2">
                         {ground.city && <span>{ground.city}, </span>}
@@ -130,7 +129,7 @@ export default function TurfHome() {
                       </p>
                     )}
 
-                    {/* View Details Button */}
+                   
                     <div className="mt-3">
                       <Link href={`/sports/${ground._id}`}>
                         <Button variant="outline" className="w-full">
@@ -143,7 +142,7 @@ export default function TurfHome() {
               ))}
             </div>
 
-            {/* Pagination */}
+           
             <div className="mt-8 flex justify-between">
               <Button
                 variant="outline"
