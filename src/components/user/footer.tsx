@@ -22,7 +22,6 @@ export default function Footer() {
   const mainLinks = [
     { name: "Explore", url: "/sports" },
     { name: "Our Vision", url: "/vision" },
-    { name: "Locations", url: "/locations" },
     { name: "Top Contributors", url: "/top-contributors" }
   ];
 
