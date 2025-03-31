@@ -19,7 +19,6 @@ function SportsCityPageContent() {
   }
 
   const { sports } = useParams(); // Get dynamic sport & city from URL
-  console.log('sports :', sports);
   const [grounds, setGrounds] = useState<Ground[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
