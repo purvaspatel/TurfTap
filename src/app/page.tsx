@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -10,7 +10,7 @@ import SubBar from "@/components/user/subbar";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import LoadingSpinner from "@/components/isLoading";
 import Navbar from "@/components/user/navbar";
-export default function TurfHome() {
+function TurfHomePage() {
   interface Ground {
     _id: string;
     title: string;
@@ -169,5 +169,14 @@ export default function TurfHome() {
         </div>
       </SessionProviderWrapper>
     </>
+  );
+}
+
+// Main component with Suspense boundary
+export default function SportsCityPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <TurfHomePage />
+    </Suspense>
   );
 }
