@@ -46,7 +46,7 @@ export default function LoadingSpinner() {
       <div className="relative w-32 h-32 mb-8 animate-pulse">
         {/* Replace with your logo */}
         <Image 
-          src="/logo.png" 
+          src="/TurfTapLogo.png" 
           alt="Your Logo"
           width={128}
           height={128}
