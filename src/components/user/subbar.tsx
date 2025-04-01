@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { MapPin, Filter } from "lucide-react";
 
 // Predefined sports categories
-const sportsList = ["All", "Football", "Cricket", "Pickle Ball", "Tennis", "Badminton", "BasketBall"];
+const sportsList = ["All", "Football", "Cricket", "PickleBall", "Tennis", "Badminton", "BasketBall"];
 
 export default function SubBar() {
     const router = useRouter();

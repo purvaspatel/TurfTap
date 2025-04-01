@@ -61,21 +61,21 @@ export default function Help() {
                 Turftap is a community-driven platform where sports enthusiasts can discover and share information about local sports grounds. Our goal is to make it easier for everyone to find places to play their favorite sports.
               </AccordionContent>
             </AccordionItem>
-            
+
             <AccordionItem value="item-2">
               <AccordionTrigger>How do I earn Turftap points?</AccordionTrigger>
               <AccordionContent>
                 You earn points by contributing to the platform. Add new sports grounds, update information, upload photos, and engage with the community. The more you contribute, the more points you'll earn.
               </AccordionContent>
             </AccordionItem>
-            
+
             <AccordionItem value="item-3">
               <AccordionTrigger>How can I report incorrect information?</AccordionTrigger>
               <AccordionContent>
                 If you notice any incorrect information about a sports ground, you can submit an update through the ground's detail page. Click on "Suggest Edit" and provide the correct information.
               </AccordionContent>
             </AccordionItem>
-            
+
             <AccordionItem value="item-4">
               <AccordionTrigger>Is Turftap available in my area?</AccordionTrigger>
               <AccordionContent>
@@ -98,11 +98,14 @@ export default function Help() {
             We're continuously improving Turftap based on your feedback. If you couldn't find the answer you're looking for, please reach out to our support team.
           </p>
           <div className="flex justify-center">
-            <Button variant="outline" className="flex items-center gap-2">
-              <Mail className="h-4 w-4" />
-              <span>Contact Support</span>
-            </Button>
+            <a href="mailto:purvaspatel1241@gmail.com">
+              <Button variant="outline" className="flex items-center gap-2">
+                <Mail className="h-4 w-4" />
+                <span>Contact Support</span>
+              </Button>
+            </a>
           </div>
+
         </CardContent>
       </Card>
     </div>

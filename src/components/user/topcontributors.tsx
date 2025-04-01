@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Medal } from "lucide-react";
+import { ChevronLeft, ChevronRight, Award } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface User {
@@ -79,12 +79,12 @@ export default function TopContributors({ limit = 10 }: TopContributorsProps) {
     }
   };
 
-  // Get medal color based on index
-  const getMedalColor = (index: number) => {
-    if (index === 0) return "text-yellow-500"; // Gold
-    if (index === 1) return "text-gray-400"; // Silver
-    if (index === 2) return "text-amber-700"; // Bronze
-    return "text-gray-300"; // Default
+  // Get award color and title based on rank
+  const getAwardInfo = (rank: number) => {
+    if (rank === 1) return { color: "text-yellow-500", title: "Gold" }; // Gold
+    if (rank === 2) return { color: "text-gray-400", title: "Silver" }; // Silver
+    if (rank === 3) return { color: "text-amber-700", title: "Bronze" }; // Bronze
+    return { color: "", title: "" }; // No award
   };
 
   return (
@@ -114,16 +114,17 @@ export default function TopContributors({ limit = 10 }: TopContributorsProps) {
         {!loading && !error && users.length > 0 && (
           <>
             <div className="space-y-3">
-              {users.map((user, index) => (
-                <div 
-                  key={user._id} 
-                  className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg"
-                >
-                  <div className="flex items-center gap-2 sm:gap-4">
-                    <div className="relative">
-                      <div className={`absolute -top-1 -left-1 ${getMedalColor(index + (page - 1) * limit)}`}>
-                        <Medal size={isMobile ? 12 : 16} />
-                      </div>
+              {users.map((user, index) => {
+                const rank = index + 1 + (page - 1) * limit;
+                const { color, title } = getAwardInfo(rank);
+                const showAward = rank <= 3;
+                
+                return (
+                  <div 
+                    key={user._id} 
+                    className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg"
+                  >
+                    <div className="flex items-center gap-2 sm:gap-4">
                       <div className="relative h-8 w-8 sm:h-10 sm:w-10 rounded-full overflow-hidden border border-gray-200">
                         {user.profileImage ? (
                           <Image 
@@ -143,22 +144,29 @@ export default function TopContributors({ limit = 10 }: TopContributorsProps) {
                           </div>
                         )}
                       </div>
+                      <div className="flex items-center">
+                        <div>
+                          <p className="font-medium text-sm sm:text-base truncate max-w-32 sm:max-w-full">
+                            {user.name}
+                          </p>
+                          <p className="text-xs sm:text-sm text-gray-500">
+                            Rank: <span className="font-semibold">#{rank}</span>
+                          </p>
+                        </div>
+                        {showAward && (
+                          <div className={`ml-1 sm:ml-2 ${color}`} title={`${title} award`}>
+                            <Award size={isMobile ? 14 : 18} />
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-medium text-sm sm:text-base truncate max-w-32 sm:max-w-full">
-                        {user.name}
-                      </p>
-                      <p className="text-xs sm:text-sm text-gray-500">
-                        Rank: <span className="font-semibold">#{index + 1 + (page - 1) * limit}</span>
-                      </p>
+                    <div className="flex items-center gap-1 sm:gap-2">
+                      <span className="text-base sm:text-lg font-bold">{user.turftapPoints}</span>
+                      <span className="text-xs sm:text-sm text-gray-500">points</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 sm:gap-2">
-                    <span className="text-base sm:text-lg font-bold">{user.turftapPoints}</span>
-                    <span className="text-xs sm:text-sm text-gray-500">points</span>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             
             {/* Pagination */}
