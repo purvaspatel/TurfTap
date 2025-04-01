@@ -8,12 +8,14 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import Comments from "@/components/user/comments";
 import LoadingSpinner from "@/components/isLoading";
+import { ArrowBigUp, ArrowBigDown } from "lucide-react";
+
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
 } from "@/components/ui/carousel";
 
 export default function TurfDetails() {
@@ -46,6 +48,7 @@ export default function TurfDetails() {
     const [userVote, setUserVote] = useState<"upvote" | "downvote" | null>(null);
     const [upvotes, setUpvotes] = useState(0);
     const [downvotes, setDownvotes] = useState(0);
+    const [voteLoading, setVoteLoading] = useState(false);
 
     // Fetch ground details
     useEffect(() => {
@@ -75,7 +78,7 @@ export default function TurfDetails() {
                 }
             }
         }
-        
+
         if (status === "authenticated") {
             fetchUserVote();
         }
@@ -87,6 +90,11 @@ export default function TurfDetails() {
             toast.error("Please sign in to vote");
             return;
         }
+
+        // Prevent multiple rapid clicks
+        if (voteLoading) return;
+
+        setVoteLoading(true);
 
         try {
             const res = await fetch("/api/grounds/vote", {
@@ -101,47 +109,48 @@ export default function TurfDetails() {
             });
 
             if (!res.ok) throw new Error("Failed to vote");
-            
+
             const data = await res.json();
-            
-            // Update UI based on response
-            if (data.userVote === "upvote") {
-                // If user upvoted
-                if (userVote === "downvote") {
-                    // If changing from downvote to upvote
-                    setDownvotes(prev => prev - 1);
-                } else if (userVote === null) {
-                    // New upvote
-                }
-                setUpvotes(prev => prev + 1);
-                setUserVote("upvote");
-            } else if (data.userVote === "downvote") {
-                // If user downvoted
-                if (userVote === "upvote") {
-                    // If changing from upvote to downvote
-                    setUpvotes(prev => prev - 1);
-                } else if (userVote === null) {
-                    // New downvote
-                }
-                setDownvotes(prev => prev + 1);
-                setUserVote("downvote");
+
+            // Check which format the API returns and handle accordingly
+            if (data.updatedGround) {
+                // If API returns the full updated ground object
+                setUpvotes(data.updatedGround.upvotes);
+                setDownvotes(data.updatedGround.downvotes);
+            } else if (data.ground) {
+                // Alternative format
+                setUpvotes(data.ground.upvotes);
+                setDownvotes(data.ground.downvotes);
             } else {
-                // If removing vote
-                if (userVote === "upvote") {
-                    setUpvotes(prev => prev - 1);
-                } else if (userVote === "downvote") {
-                    setDownvotes(prev => prev - 1);
+                // If API doesn't return ground data, fetch the latest ground data
+                const groundRes = await fetch(`/api/grounds/${id}`);
+                if (groundRes.ok) {
+                    const groundData = await groundRes.json();
+                    setUpvotes(groundData.ground.upvotes);
+                    setDownvotes(groundData.ground.downvotes);
                 }
-                setUserVote(null);
             }
-            
+
+            // Update user vote status
+            if (data.userVote !== undefined) {
+                setUserVote(data.userVote);
+            } else if (voteType === userVote) {
+                // If clicking the same button, toggle off
+                setUserVote(null);
+            } else {
+                // Otherwise set to the new vote type
+                setUserVote(voteType);
+            }
+
         } catch (error) {
             console.error("Error voting:", error);
             toast.error("Failed to vote");
+        } finally {
+            setVoteLoading(false);
         }
     };
 
-    if (loading) return <LoadingSpinner/>;
+    if (loading) return <LoadingSpinner />;
     if (!ground) return <p className="text-center text-lg">Ground not found</p>;
 
     return (
@@ -231,20 +240,22 @@ export default function TurfDetails() {
 
             {/* Dynamic Voting Section */}
             <div className="mt-6 flex items-center gap-6">
-                <button 
+                <button
                     onClick={() => handleVote("upvote")}
-                    className={`flex items-center gap-2 ${userVote === "upvote" ? "text-green-600 font-bold" : "text-gray-600"}`}
+                    className={`flex bg-gray-50 p-2 border-1 rounded-[2] items-center gap-2 ${userVote === "upvote" ? "text-green-600 font-bold" : "text-gray-600"}`}
                     aria-label="Upvote"
+                    disabled={loading}
                 >
-                    <span>🔼</span>
+                    <ArrowBigUp className={userVote === "upvote" ? "fill-green-600" : ""} />
                     <span>{upvotes} Upvotes</span>
                 </button>
-                <button 
+                <button
                     onClick={() => handleVote("downvote")}
-                    className={`flex items-center gap-2 ${userVote === "downvote" ? "text-red-600 font-bold" : "text-gray-600"}`}
+                    className={`flex bg-gray-50 p-2 border-1 rounded-[2]  items-center gap-2 ${userVote === "downvote" ? "text-red-600 font-bold" : "text-gray-600"}`}
                     aria-label="Downvote"
+                    disabled={loading}
                 >
-                    <span>🔽</span>
+                    <ArrowBigDown className={userVote === "downvote" ? "fill-red-600" : ""} />
                     <span>{downvotes} Downvotes</span>
                 </button>
             </div>

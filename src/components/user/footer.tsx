@@ -8,14 +8,12 @@ export default function Footer() {
   const sportsCategories = [
     { name: "Football", url: "/explore/football" },
     { name: "Cricket", url: "/explore/cricket" },
-    { name: "Basketball", url: "/explore/basketball" },
-    { name: "Tennis", url: "/explore/tennis" },
-    { name: "Badminton", url: "/explore/badminton" }
+    { name: "PickleBall", url: "/explore/pickleball" },
   ];
 
   const popularCities = [
     { name: "Ahmedabad", url: "/city/ahmedabad" },
-    
+
   ];
 
   // Main navigation links
@@ -37,17 +35,17 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <Image 
-                src="/TurfTapLogo.png" 
-                alt="SportSpot Logo" 
-                width={40} 
-                height={40} 
+              <Image
+                src="/TurfTapLogo.png"
+                alt="SportSpot Logo"
+                width={40}
+                height={40}
                 className="h-10 w-10"
               />
               <span className="text-xl font-bold text-green-400">Turf Tap</span>
             </div>
             <p className="text-gray-400 text-sm mt-4">
-              A community powered sports turfs and ground exploration platform.
+              A community powered sports exploration platform.
             </p>
             <div className="flex flex-col space-y-2 mt-6">
               <div className="flex items-center space-x-3">
@@ -60,14 +58,11 @@ export default function Footer() {
               </div>
             </div>
             <div className="flex space-x-4 mt-6">
-              <Link href="https://instagram.com" className="text-gray-400 hover:text-green-400 transition-colors">
+              <Link href="https://instagram.com/purvvvva" className="text-gray-400 hover:text-green-400 transition-colors">
                 <Instagram className="h-5 w-5" />
               </Link>
-              <Link href="https://twitter.com" className="text-gray-400 hover:text-green-400 transition-colors">
+              <Link href="https://x.com/purvaspatel" className="text-gray-400 hover:text-green-400 transition-colors">
                 <Twitter className="h-5 w-5" />
-              </Link>
-              <Link href="https://facebook.com" className="text-gray-400 hover:text-green-400 transition-colors">
-                <Facebook className="h-5 w-5" />
               </Link>
               <Link href="https://youtube.com" className="text-gray-400 hover:text-green-400 transition-colors">
                 <Youtube className="h-5 w-5" />
@@ -79,8 +74,8 @@ export default function Footer() {
             <ul className="space-y-2">
               {mainLinks.map((link) => (
                 <li key={link.name}>
-                  <Link 
-                    href={link.url} 
+                  <Link
+                    href={link.url}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     {link.name}
@@ -94,8 +89,8 @@ export default function Footer() {
             <ul className="space-y-2">
               {sportsCategories.map((sport) => (
                 <li key={sport.name}>
-                  <Link 
-                    href={sport.url} 
+                  <Link
+                    href={sport.url}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     {sport.name}
@@ -110,7 +105,7 @@ export default function Footer() {
               <ul className="space-y-2">
                 {popularCities.map((city) => (
                   <li key={city.name}>
-                    <Link 
+                    <Link
                       href={city.url}
                       className="text-gray-400 hover:text-white transition-colors"
                     >
@@ -125,8 +120,8 @@ export default function Footer() {
               <ul className="space-y-2">
                 {supportLinks.map((link) => (
                   <li key={link.name}>
-                    <Link 
-                      href={link.url} 
+                    <Link
+                      href={link.url}
                       className="text-gray-400 hover:text-white transition-colors"
                     >
                       {link.name}
@@ -138,18 +133,97 @@ export default function Footer() {
           </div>
         </div>
       </div>
+
       <div className="border-t border-gray-800 py-6">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-gray-500">
-            © {new Date().getFullYear()} TurfTap
-          </p>
-          <div className="mt-4 md:mt-0">
+        <div className="container mx-auto px-6 flex flex-col items-center text-center md:flex-row md:justify-between">
+          <p className="text-sm text-gray-500">© {new Date().getFullYear()} TurfTap</p>
+
+          <div className="mt-4 md:mt-0 md:mx-auto">
             <p className="text-sm text-gray-500">
               Designed and Developed with ❤️ by <a href="/createdby">Purva</a>
             </p>
           </div>
+
+          <div className="mt-4 md:mt-0 flex items-center space-x-4">
+            <p className="text-sm text-gray-500 mr-2 hidden sm:block">Powered by:</p>
+            <div className="flex items-center space-x-4">
+              {/* Next.js */}
+              <a
+                href="https://nextjs.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-green-100 hover:bg-green-200 rounded-[2] p-2 shadow-md"
+                title="Next.js"
+              >
+                <div className="relative h-5 w-5">
+                  <Image
+                    src="/nextjs.svg"
+                    alt="Next.js"
+                    width={20}
+                    height={20}
+
+                  />
+                </div>
+              </a>
+
+              {/* MongoDB */}
+              <a
+                href="https://www.mongodb.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-green-100 hover:bg-green-200 rounded-[2] p-2 shadow-md"
+                title="MongoDB"
+              >
+                <div className="relative h-5 w-5">
+                  <Image
+                    src="/mongodb.svg"
+                    alt="MongoDB"
+                    width={20}
+                    height={20}
+                  />
+                </div>
+              </a>
+
+              {/* Vercel */}
+              <a
+                href="https://vercel.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-green-100 hover:bg-green-200 rounded-[2] p-2 shadow-md"
+                title="Vercel"
+              >
+                <div className="relative h-5 w-5">
+                  <Image
+                    src="/vercel.svg"
+                    alt="Vercel"
+                    width={20}
+                    height={20}
+                  />
+                </div>
+              </a>
+
+              {/* Cloudinary */}
+              <a
+                href="https://cloudinary.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-green-100 hover:bg-green-200 rounded-[2] p-2 shadow-md"
+                title="Cloudinary"
+              >
+                <div className="relative h-5 w-5">
+                  <Image
+                    src="/cloudinary.svg"
+                    alt="Cloudinary"
+                    width={20}
+                    height={20}
+                  />
+                </div>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
+
     </footer>
   );
 }
