@@ -224,11 +224,11 @@ export default function TurfDetails() {
             <div className="mt-6">
                 <h3 className="text-xl font-semibold">Details</h3>
                 <p className="text-gray-700">
-                    <span className="font-semibold">Timings:</span> {ground.timings}
+                    <span className="font-semibold">Timings (variable):</span> {ground.timings}
                 </p>
                 <p className="text-gray-700">
                     <span className="font-semibold">Price:</span>{" "}
-                    {ground.isPaid ? `(INR. Rs.) ${ground.price}` : "Free"}
+                    {ground.isPaid ? `Can be variable (INR. Rs.) ${ground.price}` : "Free"}
                 </p>
             </div>
 
