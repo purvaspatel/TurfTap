@@ -3,18 +3,18 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import Footer from "@/components/user/footer";
-
+import Head from "next/head";
 // Configure fonts
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-  display: "swap", 
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-  display: "swap", 
+  display: "swap",
 });
 
 // Enhanced metadata for better SEO
@@ -161,7 +161,7 @@ export const metadata: Metadata = {
     "turftap booking",
     "turf tap sports"
   ],
-    creator: "Purva Patel",
+  creator: "Purva Patel",
   publisher: "Purva Patel",
   category: "Sports & Recreation",
   openGraph: {
@@ -173,7 +173,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://turftap.vercel.app/TurfTapLogo.png", 
+        url: "https://turftap.vercel.app/TurfTapLogo.png",
         width: 1200,
         height: 630,
         alt: "Turf Tap - Community Sports Exploration Platform",
@@ -184,7 +184,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Turf Tap - Find Local Sports Communities & Events",
     description: "Connect with local sports communities, discover events, and find venues near you.",
-    images: ["https://turftap.vercel.app/TurfTapLogo.png"], 
+    images: ["https://turftap.vercel.app/TurfTapLogo.png"],
   },
   robots: {
     index: true,
@@ -209,13 +209,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" dir="ltr">
+      <Head>
+        <meta name="google-site-verification" content="OlCBXN1AhSOlPfytynFjCcPiqB6TEHeOKdM4d1c84NY" />
+
+      </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex min-h-screen flex-col`}
       >
         <main id="main-content" className="flex-grow">
           {children}
         </main>
-        
+
         <Footer />
         <Script
           id="structured-data"
